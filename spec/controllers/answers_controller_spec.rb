@@ -15,9 +15,13 @@ RSpec.describe AnswersController do
     context 'with invalid attributes' do
       it 'does not save the answer' do
         expect do
-          post :create,
-               params: { question_id: question.id, answer: attributes_for(:answer, :invalid, question_id: question.id) }
+          post :create, params: { question_id: question.id, answer: attributes_for(:answer, :invalid, question_id: question.id) }
         end.not_to change(Answer, :count)
+      end
+
+      it 're-renders new view' do
+        post :create, params: { question_id: question.id, answer: attributes_for(:answer, :invalid, question_id: question.id) }
+        expect(response).to render_template :new
       end
     end
   end
